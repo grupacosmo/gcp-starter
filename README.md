@@ -33,6 +33,6 @@ data "google_compute_global_address" "external-ip"
 
 ## Basic flow:
 
-terraform init
-terraform validate
-terraform apply
+terraform init <br>
+terraform validate <br>
+terraform apply <br>
