@@ -1,4 +1,5 @@
 ### Todo
+
 - [ ] Configure DNS
 - [ ] External Static IP (interal IP can be dynamic)
 - [ ] Firewall Rules (optional)
