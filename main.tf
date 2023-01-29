@@ -1,7 +1,7 @@
 provider "google" {
     project = "cosmo-webdev"
-    region = "europe-west4"
-    zone = "europe-west4-a"
+    region  = var.region
+    zone    = var.zone
 }
 
 resource "google_service_account" "service_account" {
@@ -9,17 +9,16 @@ resource "google_service_account" "service_account" {
     display_name = var.service_account
 }
 
-resource "google_compute_instance" "vm1" {
-    name = "vm1"
-    machine_type = "e2-medium"
-    zone = "europe-west4-a"
+resource "google_compute_instance" "vm" {
+    name         = var.instance_name
+    machine_type = var.instance_type
+    zone         = var.zone
     
-
     metadata_startup_script = file("./startup.sh")
     
     boot_disk {
         initialize_params {
-          image = "ubuntu-os-cloud/ubuntu-2204-lts"
+            image = "ubuntu-os-cloud/ubuntu-2204-lts"
         }
     }
 
@@ -37,4 +36,14 @@ resource "google_compute_instance" "vm1" {
             nat_ip = data.google_compute_global_address.external-ip.address
         }
     }
+}
+
+resource "google_compute_firewall" "vm-firewall" {
+    name    = "vm-firewall"
+    network = "default"
+    allow {
+        protocol = "tcp"
+        ports    = ["80", "443", "22"]  
+    }
+    source_ranges = ["0.0.0.0/0"]
 }
